@@ -1,0 +1,10 @@
+Guide for Puzzle File Symbolic Logic Formatting
+
+
+Symbol	|	Meaning
+-------------------
+	~	|	not
+	&	|	and
+	|	|	or
+	%	|	iff
+	$	|	implies

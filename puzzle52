@@ -1,0 +1,3 @@
+Sue % ~~Bob "Only a knave would say that Bob is a knave"
+Bob % ~~Mel "It's false that Mel is a knave."
+Mel % (Bob % ~Mel) "Bob would tell you that I am a knave."
