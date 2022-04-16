@@ -3,6 +3,7 @@ Files to implement:
 - boolean equivalences
 - binary operators
 - unary operators
+- expressed by expressoin tree 
 
 2. Expression tree Class
 - made up of smaller expression trees
@@ -16,6 +17,9 @@ Files to implement:
 
 
 4. Operator Class
+- symbol
+- dimension
+- can read from json file
 
 5. Puzzle Class
 - every puzzle object has a list of expressions
@@ -29,7 +33,18 @@ Steps for solving:
 - find subtree equivalence in boolean logic 
 - simplify
 4. Proof by Contradiction
+- assume every sentence
+- 
+
 
 
 Other things:
 - require users for parenthesis 
+- template
+
+
+Links:
+https://realpython.com/python-multiple-constructors/
+https://stackoverflow.com/questions/3370286/can-a-class-contain-an-instance-of-itself-as-a-data-container
+https://docs.python.org/3/library/typing.html
+
