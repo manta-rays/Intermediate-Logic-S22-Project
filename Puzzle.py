@@ -17,3 +17,4 @@ class Puzzle(object):
 		for person in self.person_list:
 			ret += str(person) + "\n"
 		return ret
+		

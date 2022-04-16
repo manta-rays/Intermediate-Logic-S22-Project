@@ -7,7 +7,7 @@ def parse_file(filename):
 	except:
 		print("Error in opening {}".format(filename))
 		return
-	print("Opening file...\n")
+	print("Opening file...\n" + filename)
 
 	# contents is a list of each line of the puzzle
 	contents = infile.read().strip().split("\n")
