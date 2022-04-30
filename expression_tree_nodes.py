@@ -33,11 +33,11 @@ class NOT(object):
 
 class THEN(object):
 	def __init__(self, left, right):
-		self.antecedent = antecedent
-		self.consequent = consequent
+		self.antecedent = left
+		self.consequent = right
 
 	def evaluate(self, context):
-		return (not self.left.evaluate(antecedent)) or self.right.evaluate(consequent)
+		return (not self.antecedent.evaluate(context)) or self.consequent.evaluate(context)
 
 class VAR(object):
 	def __init__(self, name):
