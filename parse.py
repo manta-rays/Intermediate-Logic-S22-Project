@@ -18,72 +18,118 @@ def find_close_parenthesis(sen, ind_open):
         i+=1
     return ind
 
-
+# if there is parenthesis
+def parenthesis(sen):
+    if sen.find('(') == -1:
+        return False
+    return True
+    
+# if there are parenthesis, call this function
+# returns the substring within the parenthesis 
 def parse_parenthesis(sen):
-    # if find no more parenthesis (not going to happen)
     ind_open = sen.find('(')
+    ind_close = find_close_parenthesis(sen, ind_open)
+    return [sen[ind_open:ind_close+1], (ind_open, ind_close)]
 
-    return 1
 
 
 def parse(sen, varL:List):
     """ Should return a list of variables(vars) too to feed into map of true and false
         Should return an expression """
+    # strip the sentence of white spaces, also strip everytime I substring
+    sen = sen.strip()
     # if there is a parenthesis on the outside, delete it 
-    
-    if sen.strip()[0] == '(' and sen[len(sen)-1] == ')':
-        parse(sen[1:len(sen)-1].strip(), varL)
+    if sen[0] == '(' and sen[len(sen)-1] == ')':
+        parse(sen[1:len(sen)-1], varL)
 
     # parenthesis > iff > then > and > or > not
     # parenthesis 
-    if sen.find('(') != -1:
-        
-        p_open = sen.find('(')
-        
-        # if the parenthesis is the first expression
-        
-        # if the parenthesis is the second expression
-    
+    if parenthesis(sen):
+        sen = sen.strip()
+        ret_list = parse_parenthesis(sen)
+        ind_open = ret_list[1][0]
+        ind_close = ret_list[1][1]
+        sen1 = ret_list[0]
+         # if sen1 is in the middle then throw an error 
+        if (ind_open != 0 or ind_close != len(sen)-1):
+            raise Exception("Parsing Wrong, must add parenthesis")
+        # determine sentence2 and symbol
+        if ind_open == 0:
+            sen2 = sen[ind_close+1:]
+            sen2 = sen2.strip()
+            # find the symbol
+            symb = sen2[ind_close+1]
+            # find sentence 2 
+            sen2 = sen2[ind_close+2:].strip()
+        elif ind_close == len(sen)-1:
+            sen2 = sen[0:ind_open]
+            sen2 = sen2.strip()
+            symb = sen2[ind_open-1]
+            sen2 = sen2[0:ind_open-2].strip()
+        else:
+            raise Exception("Parsing Wrong, must add parenthesis")
+
+        # now that we have sen1, sen2 and symb, check what symb is
+        # and summon the correct thing
+        if symb == ('%'):
+            exp1 = parse(sen1, varL)
+            exp2 = parse(sen2, varL)
+            return IFF(exp1, exp2)
+        elif symb == ('$'):
+            exp1 = parse(sen1, varL)
+            exp2 = parse(sen2, varL)
+            return THEN(exp1, exp2)
+        elif symb == ('&'):
+            exp1 = parse(sen1, varL)
+            exp2 = parse(sen2, varL)
+            return AND(exp1, exp2)
+        elif symb == ('|'):
+            exp1 = parse(sen1, varL)
+            exp2 = parse(sen2, varL)
+            return OR(exp1, exp2)
+        else: 
+            raise Exception("wrong symb: ", symb)
+
     # iff 
     elif sen.find('%') != -1:
         ind = sen.find('%')
-        sen1 = sen[0:ind]
+        sen1 = sen[0:ind].strip()
         exp1 = parse(sen1, varL)
-        sen2 = sen[ind+1:]
+        sen2 = sen[ind+1:].strip()
         exp2 = parse(sen2, varL)
         return IFF(exp1, exp2)
     # if then
     elif sen.find('$') != -1:
         ind = sen.find('$')
-        sen1 = sen[0:ind]
+        sen1 = sen[0:ind].strip()
         exp1 = parse(sen1, varL)
-        sen2 = sen[ind+1:]
+        sen2 = sen[ind+1:].strip()
         exp2 = parse(sen2, varL)
         return THEN(exp1, exp2)
     # and
     elif sen.find('&'):
         ind = sen.find('&')
-        sen1 = sen[0:ind]
+        sen1 = sen[0:ind].strip()
         exp1 = parse(sen1, varL)
-        sen2 = sen[ind+1:]
+        sen2 = sen[ind+1:].strip()
         exp2 = parse(sen2, varL)
         return AND(exp1, exp2)
     # or 
-    elif sen.strip().find('|'):
+    elif sen.find('|'):
         ind = sen.find('|')
-        sen1 = sen[0:ind]
+        sen1 = sen[0:ind].strip()
         exp1 = parse(sen1, varL)
-        sen2 = sen[ind+1:]
+        sen2 = sen[ind+1:].strip()
         exp2 = parse(sen2, varL)
         return OR(exp1, exp2)
     # not
     elif sen.find('~'):
-        sen1 = sen[1:]
+        sen1 = sen[1:].strip()
         exp1 = parse(sen1, varL)
         return NOT(exp1)
     # return variables
-    varL.append(sen.strip())
-    return VAR(sen.strip())
+    varL.append(sen)
+    return VAR(sen)
 
 def generate_permutations_recurse(pos,curr_pos, curr_list, all_permutations):
     if curr_pos == pos:
@@ -121,7 +167,6 @@ def solve_puzzle(sen_list):
     varList = list()
     expression_list = list()
     
-
     for sen in sen_list:
         expression_list.append(parse(sen, varList))
     num_expressions = len(expression_list)
@@ -139,7 +184,7 @@ def solve_puzzle(sen_list):
                 truth_ct+=1
                 if truth_ct == num_expressions:
                     sol_list.append(comb)
-        truth_ct = 0      # am I at right level?   
+        truth_ct = 0      
             
     return sol_list
 
@@ -154,6 +199,4 @@ if __name__ == "__main__":
         print('\n')
         for i in each:
             print(i, end = '')
-        
-        
         
