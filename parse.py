@@ -17,8 +17,6 @@ def print_solution(sol_list):
                 print(name, " is a knave")
         print("\n")
 
-    
-
 def find_close_parenthesis(sen, ind_open):
 
     depth = 1
@@ -48,16 +46,14 @@ def parse_parenthesis(sen):
     ind_close = find_close_parenthesis(sen, ind_open)
     return [sen[ind_open:ind_close+1], (ind_open, ind_close)]
 
-
 def parse(sen, varL:List):
     """ Should return a list of variables(vars) too to feed into map of true and false
-        Should return an expression """
+        Should create an expression tree """
     # strip the sentence of white spaces, also strip everytime I substring
     sen = sen.strip()
     # if there is a parenthesis on the outside, delete it 
     if sen[0] == '(' and find_close_parenthesis(sen, 0) == len(sen)-1:
         sen = sen[1:len(sen)-1]
-
 
     # parenthesis > iff > then > and > or > not
     # parenthesis 
@@ -189,7 +185,7 @@ def solve_puzzle(sen_list):
     
     for sen in sen_list:
         expression_list.append(parse(sen, varList))
-        expression_list[-1].print_tree()
+        #expression_list[-1].print_tree()
     num_expressions = len(expression_list)
 
     # do multiple expressions
@@ -202,7 +198,7 @@ def solve_puzzle(sen_list):
     for comb in all_combination:
         for expression in expression_list:
             if expression.evaluate(comb):
-                truth_ct+=1
+                truth_ct += 1
                 if truth_ct == num_expressions:
                     sol_list.append(comb)
         truth_ct = 0      
@@ -210,16 +206,14 @@ def solve_puzzle(sen_list):
     return sol_list
 
 if __name__ == "__main__":
-    '''
-    exp = parse("A%B")
-    v = exp.evaluate({"A": True, "B":True})    
-    
-    print(v)'''
 
-    sen_list = ["Alice % ~Rex", 
-                "Bob % ~~Mel", 
-                "Zippy % ((Zippy & ~Joe) | (~Zippy & Joe))"]
-    sen_list1 = ["Alice % ~Rex", "Bob % ~~Mel"]
-    sen_list2 = ["Zippy % ((Zippy & ~Joe) | (~Zippy & Joe))"]
-    sen_list3 = ["Alice % (Zippy & ~Joe)"]
+    # prompt input
+    sen_list = list()
+    sen = ""
+    print("Input your sentences: (to finish input type \"end\")")
+    while (sen != "end"):
+        sen = input()
+        sen_list.append(sen)
+    sen_list.remove("end")
+
     solve_puzzle(sen_list)
