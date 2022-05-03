@@ -2,9 +2,14 @@
 from expression_tree_nodes import * 
 from typing import List
 import copy
-# returns an expression
-# returns a list of all variables
 
+"""
+Knights and Knave project, written by Jenny Shen and Ray Shi
+Intermediate Logic with Professor Bram, Spring 2022
+"""
+
+
+"""print out the list of solutions"""
 def print_solution(sol_list):
     if len(sol_list) == 0:
         print("Solution doesn't exist")
@@ -17,17 +22,18 @@ def print_solution(sol_list):
                 print(name, " is a knave")
         print("\n")
 
+"""given a sentence and an index for open parenthesis, 
+returns the index for closing parenthsis """
 def find_close_parenthesis(sen, ind_open):
-
     depth = 1
     i = 0
     ind = 0
     tmp_sen = sen[ind_open+1:]
+    # when depth is 0 that is when you find the closing parenthesis
+    # if depth is never 0 then there is a missing parenthesis
     while(depth!=0):
         if (depth != 0 and i==len(tmp_sen)-1 and tmp_sen[-1] != ')'):
             raise Exception("Missing Parenthesis")
-
-
         if tmp_sen[i] == '(':
             depth += 1
         elif tmp_sen[i] == ')':
@@ -37,14 +43,14 @@ def find_close_parenthesis(sen, ind_open):
     # return ind + ind_open+1
     return ind
 
-# if there is parenthesis
+"""tells you if there is an open parenthesis in the sentence"""
 def parenthesis(sen):
     if sen.find('(') == -1:
         return False
     return True
     
-# if there are parenthesis, call this function
-# returns the substring within the parenthesis 
+"""if there are parenthesis, call this function
+returns the substring within the parenthesis """
 def parse_parenthesis(sen):
     ind_open = sen.find('(')
     ind_close = find_close_parenthesis(sen, ind_open)
@@ -55,7 +61,7 @@ def parse(sen, varL:List):
         Should create an expression tree """
     # strip the sentence of white spaces, also strip everytime I substring
     sen = sen.strip()
-    # if there is a parenthesis on the outside, delete it 
+    # if there is a big parenthesis on the outside, delete it
     if sen[0] == '(' and find_close_parenthesis(sen, 0) == len(sen)-1:
         sen = sen[1:len(sen)-1]
 
@@ -70,7 +76,7 @@ def parse(sen, varL:List):
          # if sen1 is in the middle then throw an error 
         if (ind_open != 0 and ind_close != len(sen)-1):
             raise Exception("Parsing Wrong, must add parenthesis")
-        # determine sentence2 and symbol
+        # determine sentence2 and the symbol, then parse these sentences
         if ind_open == 0:
             sen2 = sen[ind_close+1:]
             sen2 = sen2.strip()
@@ -107,6 +113,7 @@ def parse(sen, varL:List):
         else: 
             raise Exception("wrong symb: ", symb)
 
+    # this is for if there is no parenthesis
     # iff 
     elif sen.find('%') != -1:
         ind = sen.find('%')
@@ -150,7 +157,9 @@ def parse(sen, varL:List):
 
     return VAR(sen)
 
-
+"""generate all possible permutations for each variable, 
+for example, if there are two variables then the permutations are {00, 01, 10, 11}
+"""
 def generate_permutations_recurse(pos,curr_pos, curr_list, all_permutations):
     if curr_pos == pos:
         all_permutations.append(curr_list)
@@ -163,13 +172,16 @@ def generate_permutations_recurse(pos,curr_pos, curr_list, all_permutations):
     generate_permutations_recurse(pos, curr_pos+1, curr_list, all_permutations)
 
 
-# wrapper for generate permutations
+"""wrapper for generate permutations"""
 def generate_permutations(pos):
     all_permutations = []
     generate_permutations_recurse(pos, 0, list(), all_permutations)
     return all_permutations
 
-# generate a list of dictionaries
+
+"""with the list of all permutations, create a list of dictionaries where each
+dictionary has variable names as key and bool value as value to indicate 
+that if they're possibly knight or knave"""
 def generate_all_combinations(varL:List):
     all_combination = []
     all_perm = generate_permutations(len(varL))
@@ -183,10 +195,12 @@ def generate_all_combinations(varL:List):
         all_combination.append(one_comb)
     return all_combination
 
+
+"""solve the puzzle, """
 def solve_puzzle(sen_list):
     varList = list()
     expression_list = list()
-    
+    # for every sentence in sentence list
     for sen in sen_list:
         expression_list.append(parse(sen, varList))
         #expression_list[-1].print_tree()
@@ -195,10 +209,9 @@ def solve_puzzle(sen_list):
     # do multiple expressions
     all_combination = generate_all_combinations(varList)
 
-    # 
+    # find all combinations where answers to all true
     truth_ct = 0
     sol_list = list()
-
     for comb in all_combination:
         for expression in expression_list:
             if expression.evaluate(comb):
@@ -208,6 +221,7 @@ def solve_puzzle(sen_list):
         truth_ct = 0      
     print_solution(sol_list)
     return sol_list
+
 
 if __name__ == "__main__":
 
@@ -219,10 +233,10 @@ if __name__ == "__main__":
         sen = input()
         sen_list.append(sen)
 
+    # remove empty items and "end" from the list
     if "" in sen_list:
         while "" in sen_list:
             sen_list.remove("")
-
     sen_list.remove("end")
-
+    # solve puzzle and print it out
     solve_puzzle(sen_list)
