@@ -147,7 +147,9 @@ def parse(sen, varL:List):
     # return variables
     if sen not in varL:
         varL.append(sen)
-        return VAR(sen)
+
+    return VAR(sen)
+
 
 def generate_permutations_recurse(pos,curr_pos, curr_list, all_permutations):
     if curr_pos == pos:
@@ -187,6 +189,7 @@ def solve_puzzle(sen_list):
     
     for sen in sen_list:
         expression_list.append(parse(sen, varList))
+        expression_list[-1].print_tree()
     num_expressions = len(expression_list)
 
     # do multiple expressions
@@ -218,4 +221,5 @@ if __name__ == "__main__":
                 "Zippy % ((Zippy & ~Joe) | (~Zippy & Joe))"]
     sen_list1 = ["Alice % ~Rex", "Bob % ~~Mel"]
     sen_list2 = ["Zippy % ((Zippy & ~Joe) | (~Zippy & Joe))"]
-    solve_puzzle(sen_list2)
+    sen_list3 = ["Alice % (Zippy & ~Joe)"]
+    solve_puzzle(sen_list)
