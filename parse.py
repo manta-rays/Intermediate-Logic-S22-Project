@@ -24,6 +24,10 @@ def find_close_parenthesis(sen, ind_open):
     ind = 0
     tmp_sen = sen[ind_open+1:]
     while(depth!=0):
+        if (depth != 0 and i==len(tmp_sen)-1 and tmp_sen[-1] != ')'):
+            raise Exception("Missing Parenthesis")
+
+
         if tmp_sen[i] == '(':
             depth += 1
         elif tmp_sen[i] == ')':
@@ -214,6 +218,11 @@ if __name__ == "__main__":
     while (sen != "end"):
         sen = input()
         sen_list.append(sen)
+
+    if "" in sen_list:
+        while "" in sen_list:
+            sen_list.remove("")
+
     sen_list.remove("end")
 
     solve_puzzle(sen_list)
