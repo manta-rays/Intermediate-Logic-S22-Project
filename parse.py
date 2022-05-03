@@ -5,17 +5,34 @@ import copy
 # returns an expression
 # returns a list of all variables
 
+def print_solution(sol_list):
+    if len(sol_list) == 0:
+        print("Solution doesn't exist")
+        return
+    for sol in sol_list:
+        for name, iden in sol.items():
+            if iden:
+                print(name, " is a knight")
+            else:
+                print(name, " is a knave")
+        print("\n")
+
+    
+
 def find_close_parenthesis(sen, ind_open):
+
     depth = 1
-    i=0
+    i = 0
     ind = 0
+    tmp_sen = sen[ind_open+1:]
     while(depth!=0):
-        if sen[i] == '(':
-            depth +=1
-        elif sen[i] == ')':
-            depth -=1
-            ind = i
+        if tmp_sen[i] == '(':
+            depth += 1
+        elif tmp_sen[i] == ')':
+            depth -= 1
+            ind = i+ind_open+1
         i+=1
+    # return ind + ind_open+1
     return ind
 
 # if there is parenthesis
@@ -32,15 +49,15 @@ def parse_parenthesis(sen):
     return [sen[ind_open:ind_close+1], (ind_open, ind_close)]
 
 
-
 def parse(sen, varL:List):
     """ Should return a list of variables(vars) too to feed into map of true and false
         Should return an expression """
     # strip the sentence of white spaces, also strip everytime I substring
     sen = sen.strip()
     # if there is a parenthesis on the outside, delete it 
-    if sen[0] == '(' and sen[len(sen)-1] == ')':
-        parse(sen[1:len(sen)-1], varL)
+    if sen[0] == '(' and find_close_parenthesis(sen, 0) == len(sen)-1:
+        sen = sen[1:len(sen)-1]
+
 
     # parenthesis > iff > then > and > or > not
     # parenthesis 
@@ -51,27 +68,27 @@ def parse(sen, varL:List):
         ind_close = ret_list[1][1]
         sen1 = ret_list[0]
          # if sen1 is in the middle then throw an error 
-        if (ind_open != 0 or ind_close != len(sen)-1):
+        if (ind_open != 0 and ind_close != len(sen)-1):
             raise Exception("Parsing Wrong, must add parenthesis")
         # determine sentence2 and symbol
         if ind_open == 0:
             sen2 = sen[ind_close+1:]
             sen2 = sen2.strip()
             # find the symbol
-            symb = sen2[ind_close+1]
+            symb = sen2[0]
             # find sentence 2 
-            sen2 = sen2[ind_close+2:].strip()
+            sen2 = sen2[1:].strip()
         elif ind_close == len(sen)-1:
             sen2 = sen[0:ind_open]
             sen2 = sen2.strip()
-            symb = sen2[ind_open-1]
+            symb = sen2[-1]
             sen2 = sen2[0:ind_open-2].strip()
         else:
             raise Exception("Parsing Wrong, must add parenthesis")
 
         # now that we have sen1, sen2 and symb, check what symb is
         # and summon the correct thing
-        if symb == ('%'):
+        if symb == '%':
             exp1 = parse(sen1, varL)
             exp2 = parse(sen2, varL)
             return IFF(exp1, exp2)
@@ -107,7 +124,7 @@ def parse(sen, varL:List):
         exp2 = parse(sen2, varL)
         return THEN(exp1, exp2)
     # and
-    elif sen.find('&'):
+    elif sen.find('&') != -1:
         ind = sen.find('&')
         sen1 = sen[0:ind].strip()
         exp1 = parse(sen1, varL)
@@ -115,7 +132,7 @@ def parse(sen, varL:List):
         exp2 = parse(sen2, varL)
         return AND(exp1, exp2)
     # or 
-    elif sen.find('|'):
+    elif sen.find('|') != -1:
         ind = sen.find('|')
         sen1 = sen[0:ind].strip()
         exp1 = parse(sen1, varL)
@@ -123,13 +140,14 @@ def parse(sen, varL:List):
         exp2 = parse(sen2, varL)
         return OR(exp1, exp2)
     # not
-    elif sen.find('~'):
+    elif sen.find('~') != -1:
         sen1 = sen[1:].strip()
         exp1 = parse(sen1, varL)
         return NOT(exp1)
     # return variables
-    varL.append(sen)
-    return VAR(sen)
+    if sen not in varL:
+        varL.append(sen)
+        return VAR(sen)
 
 def generate_permutations_recurse(pos,curr_pos, curr_list, all_permutations):
     if curr_pos == pos:
@@ -185,7 +203,7 @@ def solve_puzzle(sen_list):
                 if truth_ct == num_expressions:
                     sol_list.append(comb)
         truth_ct = 0      
-            
+    print_solution(sol_list)
     return sol_list
 
 if __name__ == "__main__":
@@ -194,9 +212,10 @@ if __name__ == "__main__":
     v = exp.evaluate({"A": True, "B":True})    
     
     print(v)'''
-    
-    for each in all:
-        print('\n')
-        for i in each:
-            print(i, end = '')
-        
+
+    sen_list = ["Alice % ~Rex", 
+                "Bob % ~~Mel", 
+                "Zippy % ((Zippy & ~Joe) | (~Zippy & Joe))"]
+    sen_list1 = ["Alice % ~Rex", "Bob % ~~Mel"]
+    sen_list2 = ["Zippy % ((Zippy & ~Joe) | (~Zippy & Joe))"]
+    solve_puzzle(sen_list2)
