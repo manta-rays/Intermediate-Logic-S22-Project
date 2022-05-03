@@ -1,3 +1,4 @@
 Peggy % (Peggy | Joe) "I am a knight or Joe is a knave."
 Joe % (Peggy & Zippy) "I know that Peggy is a knight and that Zippy is a knave."
 Zippy % ((Zippy & ~Joe) | (~Zippy & Joe)) "I and Joe are different."
+

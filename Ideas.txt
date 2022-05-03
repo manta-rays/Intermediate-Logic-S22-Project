@@ -1,0 +1,50 @@
+Files to implement:
+1. Logic sentences
+- boolean equivalences
+- binary operators
+- unary operators
+- expressed by expressoin tree 
+
+2. Expression tree Class
+- made up of smaller expression trees
+- nodes 
+
+3. Node Class (Nodes of expression tree)
+- operator object
+- expression
+- parent 
+- list of children
+
+
+4. Operator Class
+- symbol
+- dimension
+- can read from json file
+
+5. Puzzle Class
+- every puzzle object has a list of expressions
+- 
+
+
+Steps for solving:
+1. take in all statements
+2. make into tree 
+3. simplify each one 
+- find subtree equivalence in boolean logic 
+- simplify
+4. Proof by Contradiction
+- assume every sentence
+- 
+
+
+
+Other things:
+- require users for parenthesis 
+- template
+
+
+Links:
+https://realpython.com/python-multiple-constructors/
+https://stackoverflow.com/questions/3370286/can-a-class-contain-an-instance-of-itself-as-a-data-container
+https://docs.python.org/3/library/typing.html
+

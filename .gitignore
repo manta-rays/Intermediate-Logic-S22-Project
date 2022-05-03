@@ -1,3 +1,7 @@
-.idea/
-__pycache__/
+.DS_Store
 a.out
+test.py
+__pycache__/
+.idea/
+*.iml
+*.xml
