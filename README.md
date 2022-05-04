@@ -25,8 +25,11 @@ then we know that this is a solution since there are no contradictions.
 2. Translate your Knight and Knave into logic sentences
 3. When prompted for input, input logic sentences,
 for each sentence, when finished input, press enter. 
-4. When you want to finish input, type "end" and then enter
-5. The solutions will show up (if there is one)
+4. When you want to finish input, type "end" and then enter.
+5. It will then ask if you would like to display the tree
+for each expression, if you type Y or y, then it will display 
+a tree for each sentence, otherwise nothing will change.
+6. The solutions will show up! (if there is one)
 
 ## Example Input:
 ### Problem: 
@@ -34,19 +37,15 @@ for each sentence, when finished input, press enter.
 that Bob is a knave, Bob says I am a knight or Alice is a knight."
 
 ### Translated Input: 
-Alice % ~Rex
-
-Rex % ~~Bob 
-
-Bob % (Bob | Alice) 
-
-end
+Alice % ~Rex  
+Rex % ~~Bob  
+Bob % (Bob | Alice)  
+end   
 
 ### Output:
-Alice  is a knave
 
-Rex  is a knight
-
+Alice  is a knave   
+Rex  is a knight   
 Bob  is a knight
 
 ## Input & Symbol Guide
