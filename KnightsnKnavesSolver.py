@@ -8,8 +8,6 @@ Intermediate Logic with Professor Bram, Spring 2022
 """
 
 """print tree method"""
-
-
 def print_trees(expression_list, sen_list):
     for i in range(len(sen_list)):
         print(sen_list[i])
@@ -19,8 +17,6 @@ def print_trees(expression_list, sen_list):
 
 
 """print out the list of solutions"""
-
-
 def print_solution(sol_list):
     if len(sol_list) == 0:
         print("Solution doesn't exist")
@@ -37,8 +33,6 @@ def print_solution(sol_list):
 
 """given a sentence and an index for open parenthesis, 
 returns the index for closing parenthsis """
-
-
 def find_close_parenthesis(sen, ind_open):
     depth = 1
     i = 0
@@ -60,8 +54,6 @@ def find_close_parenthesis(sen, ind_open):
 
 
 """tells you if there is an open parenthesis in the sentence"""
-
-
 def parenthesis(sen):
     if sen.find('(') == -1:
         return False
@@ -70,8 +62,6 @@ def parenthesis(sen):
 
 """if there are parenthesis, call this function
 returns the substring within the parenthesis """
-
-
 def parse_parenthesis(sen):
     ind_open = sen.find('(')
     ind_close = find_close_parenthesis(sen, ind_open)
